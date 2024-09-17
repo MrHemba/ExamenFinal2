@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
+    <!-- Imagen del usuario -->
     <ImageView
         android:id="@+id/userImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="16dp"
+        android:contentDescription="User Image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/userName"
-        android:scaleType="centerCrop"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="User Name"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/userImage"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- País del usuario -->
     <TextView
         android:id="@+id/userCountry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Country"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/userImage"
         app:layout_constraintTop_toBottomOf="@id/userName"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Correo electrónico -->
     <TextView
         android:id="@+id/userEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@id/userImage"
         app:layout_constraintTop_toBottomOf="@id/userCountry"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

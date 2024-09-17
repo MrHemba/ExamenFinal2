@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.examenfinal"
-        minSdk 30
+        minSdk 34
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -47,7 +47,7 @@ dependencies {
         annotationProcessor libs.compiler
     implementation libs.play.services.maps
 
-    annotationProcessor libs.compiler
+
 
 }
 

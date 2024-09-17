@@ -6,18 +6,12 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,71 +43,61 @@ public class MainActivity extends AppCompatActivity {
         fetchUsers();
     }
 
+    // Método para obtener los usuarios de la API
     private void fetchUsers() {
         String url = "https://randomuser.me/api/?results=20";
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray results = response.getJSONArray("results");
+        JsonObjectRequest request = new JsonObjectRequest(url, null, response -> {
+            try {
+                JSONArray results = response.getJSONArray("results");
 
-                    for (int i = 0; i < results.length(); i++) {
-                        JSONObject userObject = results.getJSONObject(i);
-                        JSONObject nameObject = userObject.getJSONObject("name");
-                        String fullName = nameObject.getString("first") + " " + nameObject.getString("last");
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject userObject = results.getJSONObject(i);
 
-                        // Ubicación: país, ciudad y dirección
-                        JSONObject locationObject = userObject.getJSONObject("location");
-                        String country = locationObject.getString("country");
-                        String city = locationObject.getString("city");
-                        JSONObject streetObject = locationObject.getJSONObject("street");
-                        String address = streetObject.getString("number") + " " + streetObject.getString("name") + ", " + city + ", " + country;
+                    // Obtener los datos del usuario
+                    JSONObject nameObject = userObject.getJSONObject("name");
+                    String fullName = nameObject.getString("first") + " " + nameObject.getString("last");
 
-                        // Coordenadas
-                        JSONObject coordinatesObject = locationObject.getJSONObject("coordinates");
-                        double latitude = Double.parseDouble(coordinatesObject.getString("latitude"));
-                        double longitude = Double.parseDouble(coordinatesObject.getString("longitude"));
+                    JSONObject locationObject = userObject.getJSONObject("location");
+                    String country = locationObject.getString("country");
+                    String city = locationObject.getString("city");
+                    JSONObject streetObject = locationObject.getJSONObject("street");
+                    String address = streetObject.getString("name") + ", " + city + ", " + country;
 
-                        // Email
-                        String email = userObject.getString("email");
+                    JSONObject coordinatesObject = locationObject.getJSONObject("coordinates");
+                    double latitude = coordinatesObject.getDouble("latitude");
+                    double longitude = coordinatesObject.getDouble("longitude");
 
-                        // Imagen
-                        String imageUrl = userObject.getJSONObject("picture").getString("large");
+                    String email = userObject.getString("email");
+                    String imageUrl = userObject.getJSONObject("picture").getString("large");
 
-                        // Edad
-                        int age = userObject.getJSONObject("dob").getInt("age");
+                    // Obtener edad, teléfono, celular, y nacionalidad
+                    int age = userObject.getJSONObject("dob").getInt("age");
+                    String phone = userObject.getString("phone");
+                    String cell = userObject.getString("cell");
+                    String nationality = userObject.getString("nat");
 
-                        // Teléfonos
-                        String phone = userObject.getString("phone");
-                        String cell = userObject.getString("cell");
-
-                        // Nacionalidad
-                        String nationality = userObject.getString("nat");
-
-                        // Agregar usuario a la lista
-                        userList.add(new User(fullName, country, city, email, imageUrl, address, age, phone, cell, nationality, latitude, longitude));
-                    }
-
-                    userAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("MainActivity", "JSON Parsing error: " + e.getMessage());
+                    // Agregar el usuario a la lista con todos los campos
+                    userList.add(new User(fullName, country, city, email, imageUrl, address, latitude, longitude, age, phone, cell, nationality));
                 }
+
+                // Notificar al adaptador de que los datos han cambiado
+                userAdapter.notifyDataSetChanged();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("MainActivity", "Error: " + error.getMessage());
-            }
+        }, error -> {
+            // Manejar el error aquí
         });
 
         requestQueue.add(request);
     }
 
+
     // Manejar el clic en un usuario
     private void onUserClick(User user) {
-        Intent intent = new Intent(this, UserDetailActivity.class);
+        Intent intent = new Intent(MainActivity.this, UserDetailActivity.class);
         intent.putExtra("name", user.getName());
         intent.putExtra("email", user.getEmail());
         intent.putExtra("address", user.getAddress());
@@ -128,4 +112,5 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("nationality", user.getNationality());
         startActivity(intent);
     }
+
 }
