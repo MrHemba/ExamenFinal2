@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="userPhone" type="id" />
+    <item name="userCell" type="id" />
+    <item name="userDetails" type="id" />
+    <item name="userAddress" type="id" />
+    <item name="userAge" type="id" />
+    <item name="userNationality" type="id" />
+    <item name="flagImage" type="id" />
+    <item name="mapView" type="id" />
+</resources>
